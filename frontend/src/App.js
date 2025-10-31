@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getTaches, createTache, updateTache, deleteTache, exportToExcel, getUtilisateurs } from './services/api';
 import './App.css';
-import './Toast.css';
+import './Modal.css';
 
 function App() {
   const [taches, setTaches] = useState([]);
@@ -27,6 +27,9 @@ function App() {
 
   const [confirmDialog, setConfirmDialog] = useState(null);
 
+  /**
+   * Charge la liste des utilisateurs depuis l'API
+  */ 
   const chargerUtilisateurs = async () => {
     try {
       const data = await getUtilisateurs();
@@ -41,6 +44,9 @@ function App() {
     chargerUtilisateurs();
   }, []);
 
+  /**
+   * Charge la liste paginée des tâches selon les filtres actifs
+  */
   const chargerTaches = async () => {
     setLoading(true);
     try {
@@ -59,11 +65,18 @@ function App() {
     chargerTaches();
   }, [filtres]);
 
+  /**
+   * Gère le changement des filtres
+   * @param {Event} e - Événement de changement
+   */  
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFiltres({ ...filtres, [name]: value, page: 1 });
   };
 
+  /**
+   * Réinitialise les filtres utilisateur et statut
+   */  
   const reinitialiserFiltres = () => {
     setFiltres({
       ...filtres,
@@ -74,16 +87,27 @@ function App() {
     setShowFilterModal(false);
   };
 
+  /**
+   * Change la page active
+   * @param {number} newPage - Numéro de la nouvelle page
+   */
   const changerPage = (newPage) => {
     setFiltres({ ...filtres, page: newPage });
   };
 
+  /**
+   * Ouvre la modal pour ajouter une nouvelle tâche
+   */
   const ouvrirModalAjout = () => {
     setEditingTache(null);
     setFormData({ libelle: '', statut: 0, utilisateurId: null });
     setShowModal(true);
   };
 
+  /**
+   * Ouvre la modal pour modifier une tâche existante
+   * @param {Object} tache - Tâche à modifier
+   */
   const ouvrirModalModif = (tache) => {
     setEditingTache(tache);
     setFormData({
@@ -94,6 +118,10 @@ function App() {
     setShowModal(true);
   };
 
+  /**
+   * Gère la soumission du formulaire d'ajout/modification
+   * @param {Event} e - Événement de soumission
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -112,6 +140,10 @@ function App() {
     }
   };
 
+  /**
+   * Affiche la modal de confirmation avant suppression
+   * @param {number} id - Identifiant de la tâche à supprimer
+   */
   const supprimerTache = (id) => {
     setConfirmDialog({
       message: 'Cette action est irréversible.',
@@ -130,13 +162,16 @@ function App() {
     });
   };
 
+  /**
+   * Lance l'export Excel des tâches filtrées
+   */
   const handleExport = () => {
     exportToExcel(filtres);
   };
 
   return (
     <div className="App">
-      {/* Modal de confirmation */}
+      
       {confirmDialog && (
         <div className="confirm-modal-overlay" onClick={confirmDialog.onCancel}>
           <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
@@ -155,7 +190,6 @@ function App() {
         </div>
       )}
 
-      {/* Backdrop invisible pour fermer en cliquant ailleurs */}
       {showFilterModal && (
         <div 
           className="filter-backdrop" 
@@ -168,7 +202,6 @@ function App() {
       </header>
 
       <div className="container">
-        {/* Barre de recherche avec boutons */}
         <div className="search-bar">
           <input
             type="text"
@@ -178,7 +211,6 @@ function App() {
             onChange={handleFilterChange}
           />
           
-          {/* Container pour le bouton filtre + dropdown */}
           <div className="filter-container">
             <button 
               className="btn-filter" 
@@ -188,7 +220,6 @@ function App() {
               ▼
             </button>
             
-            {/* Dropdown qui s'ouvre SOUS le bouton */}
             {showFilterModal && (
               <div className="filter-dropdown">
                 <h3>Filtres</h3>
@@ -302,8 +333,6 @@ function App() {
           </div>
         )}
       </div>
-
-      {/* Modal d'ajout/modification */}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>

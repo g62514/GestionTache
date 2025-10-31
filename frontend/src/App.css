@@ -1,4 +1,4 @@
-/* === Style global === */
+/* Style global */
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -12,7 +12,7 @@ body {
   flex-direction: column;
 }
 
-/* === En-tête === */
+/*En-tête */
 .App-header {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
@@ -26,7 +26,7 @@ body {
   font-size: 2rem;
 }
 
-/* === Conteneur principal === */
+/*Conteneur principal */
 .container {
   flex: 1;
   max-width: 1100px;
@@ -39,7 +39,7 @@ body {
   position: relative;
 }
 
-/* === Section Actions (boutons en haut) === */
+/*Section Actions (boutons en haut)*/
 .actions {
   display: flex;
   gap: 0.8rem;
@@ -70,7 +70,7 @@ body {
   font-weight: 500;
 }
 
-/* === Barre de recherche avec boutons === */
+/*Barre de recherche avec boutons */
 .search-bar {
   display: flex;
   gap: 0.5rem;
@@ -176,7 +176,7 @@ body {
   background: #334155;
 }
 
-/* === Tableau === */
+/*Tableau */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -212,7 +212,7 @@ tbody tr:hover {
   background-color: #f3f0ff;
 }
 
-/* === Boutons dans le tableau === */
+/* Boutons dans le tableau */
 tbody td button {
   background: #667eea;
   border: none;
@@ -238,7 +238,7 @@ tbody td button:last-child:hover {
   background: #c0392b;
 }
 
-/* === Badges de statut === */
+/*Badges de statut */
 .badge {
   padding: 0.3rem 0.7rem;
   border-radius: 20px;
@@ -262,7 +262,7 @@ tbody td button:last-child:hover {
   color: #065f46;
 }
 
-/* === Pagination === */
+/* Pagination */
 .pagination {
   display: flex;
   justify-content: center;
@@ -298,7 +298,7 @@ tbody td button:last-child:hover {
   cursor: not-allowed;
 }
 
-/* === Modal === */
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -392,7 +392,7 @@ tbody td button:last-child:hover {
   background: #5568d3;
 }
 
-/* === Responsive === */
+/* Responsive */
 @media (max-width: 900px) {
   .container {
     margin: 1rem;
