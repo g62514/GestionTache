@@ -1,0 +1,424 @@
+/* === Style global === */
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #f5f6fa;
+  color: #2f3640;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === En-tête === */
+.App-header {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+/* === Conteneur principal === */
+.container {
+  flex: 1;
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow-x: auto;
+  position: relative;
+}
+
+/* === Section Actions (boutons en haut) === */
+.actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  background-color: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.actions button:hover {
+  background-color: #5568d3;
+}
+
+.count {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-left: auto;
+  font-weight: 500;
+}
+
+/* === Barre de recherche avec boutons === */
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+/* Container pour le bouton filtre + dropdown */
+.filter-container {
+  position: relative;
+}
+
+.btn-filter,
+.btn-excel {
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s;
+}
+
+.btn-filter:hover,
+.btn-excel:hover {
+  background: #f1f5f9;
+}
+
+/* Backdrop invisible */
+.filter-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  background: transparent;
+}
+
+/* Dropdown compact qui s'ouvre SOUS le bouton */
+.filter-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  padding: 1.25rem;
+  border-radius: 8px;
+  width: 320px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  border: 1px solid #e2e8f0;
+}
+
+.filter-dropdown h3 {
+  margin: 0 0 1rem 0;
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.filter-label {
+  display: block;
+  margin-bottom: 1rem;
+  color: #d97706;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.filter-label select {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.35rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  background: white;
+  color: #64748b;
+}
+
+.btn-reinitialiser {
+  width: 100%;
+  padding: 0.65rem;
+  background: #475569;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+
+.btn-reinitialiser:hover {
+  background: #334155;
+}
+
+/* === Tableau === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+thead {
+  background-color: #667eea;
+  color: white;
+}
+
+thead th {
+  text-align: left;
+  padding: 0.8rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8f9fc;
+}
+
+tbody td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #ececec;
+  font-size: 0.95rem;
+  word-wrap: break-word;
+}
+
+tbody tr:hover {
+  background-color: #f3f0ff;
+}
+
+/* === Boutons dans le tableau === */
+tbody td button {
+  background: #667eea;
+  border: none;
+  color: white;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+}
+
+tbody td button:hover {
+  background: #5568d3;
+}
+
+tbody td button:last-child {
+  background: #e74a3b;
+  margin-right: 0;
+}
+
+tbody td button:last-child:hover {
+  background: #c0392b;
+}
+
+/* === Badges de statut === */
+.badge {
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.badge-0 {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-1 {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-2 {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* === Pagination === */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.pagination button {
+  background: #f0f2f6;
+  border: 1px solid #dcdde1;
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.pagination button.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* === Modal === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+.modal h2 {
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+  font-size: 1.5rem;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.modal input,
+.modal select {
+  padding: 0.75rem;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.modal input:focus,
+.modal select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.modal-buttons button {
+  flex: 1;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.modal-buttons button[type="button"] {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.modal-buttons button[type="button"]:hover {
+  background: #cbd5e1;
+}
+
+.modal-buttons button[type="submit"] {
+  background: #667eea;
+  color: white;
+}
+
+.modal-buttons button[type="submit"]:hover {
+  background: #5568d3;
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-bar {
+    flex-wrap: wrap;
+  }
+}
+
+/* Scroll horizontal */
+.container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: transparent;
+}
