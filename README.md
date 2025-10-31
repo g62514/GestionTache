@@ -79,13 +79,8 @@ GestionTaches/
 - **Filtrer** : Icône ▼ ou barre de recherche
 - **Exporter** : Icône 📥
 
-## Dépannage
 
-**Backend ne démarre pas** → Vérifiez que le port 5186 est libre  
-**Frontend ne charge pas** → Vérifiez que l'API tourne sur localhost:5186  
-**Port 3000 occupé** → Fermez l'app qui l'utilise
-
-## Recréer la base
+## Recréer la base de donnée
 ```bash
 cd backend
 rm app.db
