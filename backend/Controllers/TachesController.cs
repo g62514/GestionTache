@@ -3,18 +3,34 @@ using Microsoft.EntityFrameworkCore;
 using backend.Models;
 
 namespace backend.Controllers
-{
+{   
+    /// <summary>
+    /// Contrôleur de gestion des tâches
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class TachesController : ControllerBase
     {
         private readonly AppDbContext _context;
-
+        
+        /// <summary>
+        /// Constructeur du contrôleur
+        /// </summary>
+        /// <param name="context">Contexte de base de données</param>
         public TachesController(AppDbContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Récupère la liste paginée des tâches avec filtres optionnels
+        /// </summary>
+        /// <param name="libelle">Filtre sur le libellé de la tâche</param>
+        /// <param name="utilisateurId">Filtre sur l'utilisateur assigné</param>
+        /// <param name="statut">Filtre sur le statut (0: En cours, 1: Bloqué, 2: Terminé)</param>
+        /// <param name="page">Numéro de page (par défaut: 1)</param>
+        /// <param name="pageSize">Nombre d'éléments par page (par défaut: 10)</param>
+        /// <returns>Résultat paginé contenant les tâches</returns>
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<Tache>>> GetTaches(
             [FromQuery] string? libelle,
@@ -53,8 +69,11 @@ namespace backend.Controllers
         }
 
     
-
-        // POST: api/taches
+        /// <summary>
+        /// Crée une nouvelle tâche
+        /// </summary>
+        /// <param name="tache">Données de la tâche à créer</param>
+        /// <returns>La tâche créée</returns>
         [HttpPost]
         public async Task<ActionResult<Tache>> CreateTache(Tache tache)
         {
@@ -64,7 +83,12 @@ namespace backend.Controllers
             return Ok(tache);
         }
 
-        // PUT: api/taches/5
+        /// <summary>
+        /// Met à jour une tâche existante
+        /// </summary>
+        /// <param name="id">Identifiant de la tâche</param>
+        /// <param name="tache">Nouvelles données de la tâche</param>
+        /// <returns>NoContent si succès</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTache(int id, Tache tache)
         {
@@ -91,7 +115,11 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        // DELETE: api/taches/5
+        /// <summary>
+        /// Supprime une tâche
+        /// </summary>
+        /// <param name="id">Identifiant de la tâche à supprimer</param>
+        /// <returns>NoContent si succès, NotFound si la tâche n'existe pas</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTache(int id)
         {
@@ -107,14 +135,20 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        // GET: api/taches/export
+        /// <summary>
+        /// Exporte les tâches filtrées dans un fichier Excel
+        /// </summary>
+        /// <param name="libelle">Filtre sur le libellé</param>
+        /// <param name="utilisateurId">Filtre sur l'utilisateur</param>
+        /// <param name="statut">Filtre sur le statut</param>
+        /// <returns>Fichier Excel (.xlsx)</returns>
         [HttpGet("export")]
         public async Task<IActionResult> ExportToExcel(
             [FromQuery] string? libelle,
             [FromQuery] int? utilisateurId,
             [FromQuery] int? statut)
         {
-            // Applique les mêmes filtres que GetTaches
+            
             var query = _context.Taches.Include(t => t.Utilisateur).AsQueryable();
             query = ApplyFilters(query, libelle, utilisateurId, statut);
 
@@ -137,7 +171,6 @@ namespace backend.Controllers
                 worksheet.Cells[row, 1].Value = tache.Libelle;
                 worksheet.Cells[row, 2].Value = tache.Utilisateur?.Prenom ?? "";
 
-                // Convertir le statut en texte
                 worksheet.Cells[row, 3].Value = tache.Statut switch
                 {
                     0 => "En cours",
@@ -162,7 +195,11 @@ namespace backend.Controllers
 
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
-        
+
+        /// <summary>
+        /// Récupère la liste de tous les utilisateurs
+        /// </summary>
+        /// <returns>Liste des utilisateurs</returns>
         [HttpGet("users")]
         public async Task<ActionResult<IEnumerable<Utilisateur>>> GetUtilisateurs()
         {
@@ -170,14 +207,25 @@ namespace backend.Controllers
             return Ok(utilisateurs);
         }
 
-
+        /// <summary>
+        /// Vérifie si une tâche existe
+        /// </summary>
+        /// <param name="id">Identifiant de la tâche</param>
+        /// <returns>True si la tâche existe, False sinon</returns>
         private bool TacheExists(int id)
         {
             return _context.Taches.Any(t => t.Id == id);
         }
 
 
-
+        /// <summary>
+        /// Applique les filtres sur la requête de tâches
+        /// </summary>
+        /// <param name="query">Requête initiale</param>
+        /// <param name="libelle">Filtre sur le libellé</param>
+        /// <param name="utilisateurId">Filtre sur l'utilisateur</param>
+        /// <param name="statut">Filtre sur le statut</param>
+        /// <returns>Requête filtrée</returns>
         private IQueryable<Tache> ApplyFilters(
             IQueryable<Tache> query,
             string? libelle,
